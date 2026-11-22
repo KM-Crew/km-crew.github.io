@@ -17,7 +17,7 @@ const award = a => a.endsWith('상') ? a : a + '상';
 
 function route() {
   const hash = location.hash.slice(1) || '/';
-  closeFull(true);
+  document.body.classList.remove('noscroll');
   window.scrollTo(0, 0);
   if (hash.startsWith('/p/')) return detail(hash.slice(3));
   if (hash === '/compare') return compare();
@@ -66,8 +66,13 @@ function detail(repo) {
     </header>
     <div class="dgrid">
       <section class="phonecol">
-        <div class="phone" id="phone"><div class="slot" id="slot"></div></div>
-        <div class="row center"><button class="btn primary" id="gofull">⛶ 크게 체험하기</button><button class="btn" id="reload">↻ 처음부터</button></div>
+        <div class="viewbar"><div class="seg" id="seg"><button data-m="mobile">📱 모바일</button><button data-m="pc">🖥 PC</button></div>
+          <span class="grow"></span><button class="btn" id="reload">↻ 처음부터</button><button class="btn primary" id="gofull">⛶ 크게 체험</button></div>
+        <div class="stagebox" id="stagebox">
+          <div class="fullbar"><button id="fullclose">← 상세로 돌아가기</button><span>${esc(i.title)}</span><span class="grow"></span><span class="muted small">Esc</span></div>
+          <div class="chrome"><i></i><i></i><i></i><span class="url">km-crew.github.io/${esc(i.repo)}/</span></div>
+          <div class="vp" id="vp"></div>
+        </div>
       </section>
       <section class="infocol">
         <div class="facts">
@@ -85,14 +90,18 @@ function detail(repo) {
         <p class="small muted">코드 저장소: <a href="https://github.com/KM-Crew/${esc(i.repo)}" target="_top">github.com/KM-Crew/${esc(i.repo)}</a></p>
       </section>
     </div>`;
-  // 체험 화면(iframe) — 하나만 만들어 상세 ↔ 크게 보기 사이를 옮겨 다니므로 진행 상태가 유지됨
+  // 체험 화면(iframe). iframe을 DOM에서 옮기면 새로 로드되므로, 틀의 크기·모양만 바꿔
+  // 모바일 ↔ PC ↔ 크게 보기를 전환한다(진행 중인 상태 유지). 앱은 iframe 폭으로 PC/모바일 배치를 고름.
   const frame = document.createElement('iframe');
   frame.src = appUrl(repo);
   frame.title = i.title + ' 체험 화면';
   frame.allow = ALLOW;
   frame.setAttribute('allowfullscreen', '');
-  $('#slot').append(frame);
-  $('#gofull').onclick = () => openFull(frame, i.title);
+  $('#vp').append(frame);
+  setMode(getMode());
+  $$('#seg button').forEach(b => b.onclick = () => setMode(b.dataset.m));
+  $('#gofull').onclick = () => setFull(true);
+  $('#fullclose').onclick = () => setFull(false);
   $('#reload').onclick = () => { frame.src = appUrl(repo) + '?r=' + Date.now(); };
   // 점수
   const save = () => { const all = getScores(); all[repo] = sc; setScores(all); };
@@ -111,25 +120,46 @@ function detail(repo) {
   }).catch(() => { $('#plan').innerHTML = `<p class="muted">기획서를 불러오지 못했어요. 저장소의 PLAN.md를 확인하세요.</p>`; });
 }
 
-/* ---------- 크게 보기(같은 창 안의 전체 화면 오버레이) ---------- */
-let fullFrame = null, homeSlot = null;
-function openFull(frame, title) {
-  fullFrame = frame; homeSlot = frame.parentElement;
-  $('#fullslot').append(frame);
-  $('#fulltitle').textContent = title;
-  $('#full').classList.remove('hidden');
-  document.body.classList.add('noscroll');
+/* ---------- 체험 틀: 모바일 / PC / 크게 보기 ---------- */
+const PC_W = 1280, PC_H = 800;
+function getMode() {
+  try { const m = localStorage.getItem('hub-view'); if (m === 'pc' || m === 'mobile') return m; } catch (e) { /* 무시 */ }
+  return innerWidth >= 1100 ? 'pc' : 'mobile';
 }
-function closeFull(discard) {
-  if (!fullFrame) return;
-  if (!discard && homeSlot && document.contains(homeSlot)) homeSlot.append(fullFrame);
-  else fullFrame.remove();
-  fullFrame = null; homeSlot = null;
-  $('#full').classList.add('hidden');
-  document.body.classList.remove('noscroll');
+function setMode(m) {
+  try { localStorage.setItem('hub-view', m); } catch (e) { /* 무시 */ }
+  const box = $('#stagebox');
+  if (!box) return;
+  box.classList.toggle('pcmode', m === 'pc');
+  box.classList.toggle('mobilemode', m !== 'pc');
+  const grid = $('.dgrid');
+  if (grid) grid.classList.toggle('pcgrid', m === 'pc');
+  $$('#seg button').forEach(b => b.classList.toggle('on', b.dataset.m === m));
+  fitPc();
 }
-$('#fullclose').onclick = () => closeFull(false);
-addEventListener('keydown', e => { if (e.key === 'Escape' && fullFrame) closeFull(false); });
+function fitPc() {
+  const box = $('#stagebox'), vp = $('#vp'), f = vp && $('iframe', vp);
+  if (!f) return;
+  if (box.classList.contains('pcmode') && !box.classList.contains('full')) {
+    const sc = vp.clientWidth / PC_W;
+    f.style.width = PC_W + 'px';
+    f.style.height = PC_H + 'px';
+    f.style.transform = `scale(${sc})`;
+    vp.style.height = (PC_H * sc) + 'px';
+  } else {
+    f.style.width = ''; f.style.height = ''; f.style.transform = '';
+    vp.style.height = '';
+  }
+}
+function setFull(on) {
+  const box = $('#stagebox');
+  if (!box) return;
+  box.classList.toggle('full', on);
+  document.body.classList.toggle('noscroll', on);
+  fitPc();
+}
+addEventListener('resize', fitPc);
+addEventListener('keydown', e => { if (e.key === 'Escape' && $('#stagebox.full')) setFull(false); });
 
 /* ---------- 한눈에 비교 ---------- */
 function compare() {
