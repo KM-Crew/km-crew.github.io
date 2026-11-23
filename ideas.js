@@ -21,7 +21,7 @@ const IDEAS = [
     level: '낮음', awards: ['도파민', '천재발상'], deps: '없음', risk: '실제 제품 화면을 베끼지 않도록 주의' },
   { no: 7, repo: 'font-maker', title: '내 손글씨 폰트', emoji: '✍️', color: '#ea580c',
     idea: '나만의 폰트 제작기', one: '화면에 그린 글자로 실제 설치 가능한 폰트 파일(OTF)을 만드는 제작기',
-    level: '높음', awards: ['천재발상'], deps: '없음', risk: '한글 지원이 어려움(지금은 영문·숫자만)' },
+    level: '높음', awards: ['천재발상'], deps: '없음', risk: '영문·숫자는 완성, 한글은 자모 조합 실험 단계(약 1,380자)' },
   { no: 8, repo: 'accident-lab', title: '에이~ 안 죽어', emoji: '🧪', color: '#f76b15',
     idea: '에이~ 안 죽어 - 사건 사고 모의 실험실', one: '"이 정도는 괜찮겠지" 싶은 일상 사고를 인형으로 물리 실험하고 안전 수칙까지',
     level: '높음', awards: ['도파민', '천재발상'], deps: '없음', risk: '위험 행동 조장으로 보이지 않게 → 결과마다 안전 수칙 표시' },
