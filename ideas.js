@@ -1,15 +1,15 @@
 /* 허브에 보이는 10개 아이디어 목록. 상세 기획은 각 저장소의 PLAN.md를 그대로 불러온다. */
 'use strict';
 const IDEAS = [
-  { no: 1, repo: 'security-checkup', title: '내 보안 몇 점?', emoji: '🔒', color: '#2f5cff',
-    idea: '보안 관련', one: '30초 만에 보안 습관 점수를 받고 비밀번호 강도와 스미싱 판별력까지 확인하는 자가진단',
-    level: '낮음', awards: ['리뷰맛집'], deps: '없음', risk: '원안이 "보안 관련"뿐이라 방향 확인 필요' },
+  { no: 1, repo: 'security-checkup', title: '이 사이트 보안 몇 점?', emoji: '🔒', color: '#2f5cff',
+    idea: '보안 관련 — 사이트 링크를 넣으면 취약점을 분석해 보안 점수', one: '사이트 주소를 넣으면 HTTPS·보안 헤더·메일 위조 방지를 살펴 보안 점수와 고치는 법까지',
+    level: '중간', awards: ['리뷰맛집', '천재발상'], deps: 'Mozilla Observatory·Google 공개 DNS(키 없음)', risk: '공개 응답만 검사(능동 검사 금지), 외부 API 장애 시 검사 불가' },
   { no: 2, repo: 'card-maker', title: '명함 공방', emoji: '🪪', color: '#1f2937',
     idea: '명함 디자인 해주는 사이트', one: '정보만 넣으면 인쇄용 명함과 모바일 디지털 명함(QR·연락처 저장)을 한 번에',
     level: '중간', awards: ['제철디자인'], deps: '없음', risk: '템플릿 디자인 품질이 승부처' },
   { no: 3, repo: 'rant-meter', title: '팀플 분노 측정기', emoji: '🌡️', color: '#e5484d',
-    idea: '폐급 팀원 욕하면 수치를 측정해서 발표자료 만들기', one: '팀플 하소연을 분노·무임승차 지수로 측정해 진지한 척 발표 슬라이드로',
-    level: '중간', awards: ['도파민', '천재발상'], deps: '없음', risk: '비방으로 보이면 반려 위험 → 실명 마스킹·욕설 가림 적용' },
+    idea: '폐급 팀원 욕하면 수치를 측정해서 발표자료 만들기', one: '팀플 하소연을 분노 온도로 바꾸고, 그 온도 색으로 발표용 PPT 템플릿을 만들어 줌',
+    level: '중간', awards: ['도파민', '천재발상', '제철디자인'], deps: '없음', risk: '결과물에 하소연이 안 나와 비방 위험 낮음. 실제 파워포인트에서 템플릿 확인 필요' },
   { no: 4, repo: 'color-melody', title: '색의 노래', emoji: '🎨', color: '#7c3aed',
     idea: '세상의 색을 모아 나만의 노래 만들어주는 앱', one: '카메라로 모은 색이 음이 되어 연주되는 나만의 짧은 노래',
     level: '중간', awards: ['제철디자인', '뭔작귀'], deps: '카메라 권한', risk: 'iOS 소리·카메라 제약, 사진·직접 고르기 대체 경로 있음' },
