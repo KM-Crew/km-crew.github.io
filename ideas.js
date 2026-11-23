@@ -1,9 +1,9 @@
 /* 허브에 보이는 10개 아이디어 목록. 상세 기획은 각 저장소의 PLAN.md를 그대로 불러온다. */
 'use strict';
 const IDEAS = [
-  { no: 1, repo: 'security-checkup', title: '내 보안 몇 점?', emoji: '🔒', color: '#2f5cff',
-    idea: '보안 관련', one: '30초 만에 보안 습관 점수를 받고 비밀번호 강도와 스미싱 판별력까지 확인하는 자가진단',
-    level: '낮음', awards: ['리뷰맛집'], deps: '없음', risk: '원안이 "보안 관련"뿐이라 방향 확인 필요' },
+  { no: 1, repo: 'security-checkup', title: '이 사이트 보안 몇 점?', emoji: '🔒', color: '#2f5cff',
+    idea: '보안 관련 — 사이트 링크를 넣으면 취약점을 분석해 보안 점수', one: '사이트 주소를 넣으면 HTTPS·보안 헤더·메일 위조 방지를 살펴 보안 점수와 고치는 법까지',
+    level: '중간', awards: ['리뷰맛집', '천재발상'], deps: 'Mozilla Observatory·Google 공개 DNS(키 없음)', risk: '공개 응답만 검사(능동 검사 금지), 외부 API 장애 시 검사 불가' },
   { no: 2, repo: 'card-maker', title: '명함 공방', emoji: '🪪', color: '#1f2937',
     idea: '명함 디자인 해주는 사이트', one: '정보만 넣으면 인쇄용 명함과 모바일 디지털 명함(QR·연락처 저장)을 한 번에',
     level: '중간', awards: ['제철디자인'], deps: '없음', risk: '템플릿 디자인 품질이 승부처' },
